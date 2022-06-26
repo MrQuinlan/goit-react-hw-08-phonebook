@@ -1,11 +1,32 @@
 import { configureStore } from '@reduxjs/toolkit';
+import {
+    persistStore,
+    persistReducer,
+    FLUSH,
+    REHYDRATE,
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+import { authReducer } from './Auth';
 
 import { filter } from './Filter/Filter-reducer';
 
 import { contactsApi } from '../services/contacts-api';
 
+const persistConfig = {
+    key: 'auth',
+    storage,
+    whitelist: ['token'],
+};
+const persistedReducer = persistReducer(persistConfig, authReducer);
+
 const store = configureStore({
     reducer: {
+        auth: persistedReducer,
         [contactsApi.reducerPath]: contactsApi.reducer,
         filter,
 
@@ -13,7 +34,20 @@ const store = configureStore({
     },
 
     middleware: getDefaultMiddleware =>
-        getDefaultMiddleware().concat(contactsApi.middleware),
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [
+                    FLUSH,
+                    REHYDRATE,
+                    PAUSE,
+                    PERSIST,
+                    PURGE,
+                    REGISTER,
+                ],
+            },
+        }).concat(contactsApi.middleware),
 });
 
-export { store };
+let persistor = persistStore(store);
+
+export { store, persistor };

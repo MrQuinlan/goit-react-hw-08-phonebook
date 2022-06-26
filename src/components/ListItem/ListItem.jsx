@@ -2,13 +2,13 @@ import { useRemoveContactMutation } from 'services/contacts-api';
 import { Rings } from 'react-loader-spinner';
 import s from './ListItem.module.css';
 
-const ListItem = ({ id, name, phone }) => {
+const ListItem = ({ id, name, number }) => {
     const [removeContact, { isLoading }] = useRemoveContactMutation();
 
     return (
         <li className={s.item} key={id}>
             <span className={s.span}>
-                {name}: {phone}
+                {name}: {number}
             </span>
 
             <button

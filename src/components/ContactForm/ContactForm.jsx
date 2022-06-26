@@ -48,7 +48,7 @@ const ContactForm = () => {
     return (
         <form className={s.form} onSubmit={handleSubmit}>
             <label className={s.label}>
-                <span className={s.title}>name</span>
+                <span className={s.title}>Name</span>
                 <input
                     className={s.input}
                     type="text"
@@ -62,7 +62,7 @@ const ContactForm = () => {
             </label>
 
             <label className={s.label}>
-                <span className={s.title}>number</span>
+                <span className={s.title}>Number</span>
                 <input
                     className={s.input}
                     type="tel"
