@@ -1,10 +1,13 @@
-import { useSelector } from 'react-redux/es/exports';
+import { useSelector, useStore } from 'react-redux/es/exports';
 import { useGetContactsQuery } from 'services/contacts-api';
 import s from './ContactList.module.css';
 import ListItem from 'components/ListItem';
 
 const ContactList = () => {
-    const { data } = useGetContactsQuery('');
+    const newToken = useStore().getState().auth.token;
+    const { data } = useGetContactsQuery({
+        refetchOnMountOrArgChange: newToken,
+    });
 
     function filteredContacts(state) {
         const filter = state.filter;
